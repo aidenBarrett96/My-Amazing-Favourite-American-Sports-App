@@ -1,10 +1,16 @@
-[![Blitz.js](https://raw.githubusercontent.com/blitz-js/art/master/github-cover-photo.png)](https://blitzjs.com)
+# **Tappit Test**
 
-This is a minimal [Blitz.js](https://github.com/blitz-js/blitz) app.
+Here you will find the take home test for Tappit. This is a simple test to see how you interact with APIs, and test the outcome.
 
-# **tappit-test**
+See the instructions below to get set up locally
 
 ## Getting Started
+
+Install the dependencies:
+
+```bash
+yarn
+```
 
 Run your app in the development mode.
 
