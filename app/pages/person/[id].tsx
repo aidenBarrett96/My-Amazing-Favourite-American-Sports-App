@@ -34,7 +34,7 @@ const PersonPage: BlitzPage<PersonPageProps> = ({ person }) => {
 
   // TODO: update the submit functionalit (no update endpoint)
   const onSubmit = useCallback(() => {
-    console.log("Submitted form values =>>", getValues())
+    alert(`Submitted form values =>> ${JSON.stringify(getValues(), null, 4)}`)
   }, [getValues])
 
   // Fallback if no person is found (one is always found with this endpoint)
