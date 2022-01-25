@@ -1,195 +1,85 @@
-import { Image, BlitzPage } from "blitz"
-import logo from "public/logo.png"
+import {
+  Box,
+  Container,
+  Heading,
+  HStack,
+  LinkBox,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react"
+import { getAllPeople } from "app/person/getAllPeople"
+import { Person } from "app/person/person.types"
+import { PaginationButtons } from "app/utilities/pagination/PaginationButtons"
+import { useClientSidePagination } from "app/utilities/pagination/usePagination"
+import { BlitzPage, GetStaticProps, Link } from "blitz"
+
+interface HomePageProps {
+  people: Person[]
+}
 
 /*
  * This file is just for a pleasant getting started page for your new app.
  * You can delete everything in here and start from scratch if you like.
  */
 
-const Home: BlitzPage = () => {
+const Home: BlitzPage<HomePageProps> = ({ people }) => {
+  // Paginate the people from props
+  const [paginatedPeople, peoplePaginationDetails] = useClientSidePagination({ data: people })
   return (
-    <div className="container">
-      <main>
-        <div className="logo">
-          <Image src={logo} alt="blitzjs" />
-        </div>
-        <p>
-          <strong>Congrats!</strong> Your app is ready.
-        </p>
-        <div className="buttons" style={{ marginTop: "5rem" }}>
-          <a
-            className="button"
-            href="https://blitzjs.com/docs/getting-started?utm_source=blitz-new&utm_medium=app-template&utm_campaign=blitz-new"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-          <a
-            className="button-outline"
-            href="https://github.com/blitz-js/blitz"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Github Repo
-          </a>
-          <a
-            className="button-outline"
-            href="https://discord.blitzjs.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Discord Community
-          </a>
-        </div>
-      </main>
+    <Container maxW="container.lg" as="main" py="80px">
+      <Heading mb="4">My Amazing Favourite American Sports App</Heading>
+      <Box overflow="auto">
+        <Table size="sm" variant="simple">
+          <Thead>
+            <Tr>
+              <Th>Name</Th>
+              <Th>Enabled</Th>
+              <Th>Valid</Th>
+              <Th>Authorised</Th>
+              <Th>Palindromes</Th>
+              <Th>Favourite Sports</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {paginatedPeople?.map((person) => (
+              <Tr key={person.personId}>
+                <Td>
+                  <Link href={`/person/${person.personId}`} passHref>
+                    <LinkBox textDecor="underline" cursor="pointer">
+                      {person.firstName} {person.lastName}
+                    </LinkBox>
+                  </Link>
+                </Td>
+                <Td>{person.isEnabled.toString()}</Td>
+                <Td>{person.isValid.toString()}</Td>
+                <Td>{person.isAuthorised.toString()}</Td>
+                <Td>{person.isPalindrome.toString()}</Td>
+                <Td>{person.favouriteSports.map((sport) => sport.name).join(", ")}</Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Box>
 
-      <footer>
-        <a
-          href="https://blitzjs.com?utm_source=blitz-new&utm_medium=app-template&utm_campaign=blitz-new"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by Blitz.js
-        </a>
-      </footer>
-
-      <style jsx global>{`
-        @import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;700&display=swap");
-
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: "Libre Franklin", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-            Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-        }
-
-        * {
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          box-sizing: border-box;
-        }
-        .container {
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        main p {
-          font-size: 1.2rem;
-        }
-
-        p {
-          text-align: center;
-        }
-
-        footer {
-          width: 100%;
-          height: 60px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background-color: #45009d;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer a {
-          color: #f4f4f4;
-          text-decoration: none;
-        }
-
-        .logo {
-          margin-bottom: 2rem;
-        }
-
-        .logo img {
-          width: 300px;
-        }
-
-        .buttons {
-          display: grid;
-          grid-auto-flow: column;
-          grid-gap: 0.5rem;
-        }
-        .button {
-          font-size: 1rem;
-          background-color: #6700eb;
-          padding: 1rem 2rem;
-          color: #f4f4f4;
-          text-align: center;
-        }
-
-        .button.small {
-          padding: 0.5rem 1rem;
-        }
-
-        .button:hover {
-          background-color: #45009d;
-        }
-
-        .button-outline {
-          border: 2px solid #6700eb;
-          padding: 1rem 2rem;
-          color: #6700eb;
-          text-align: center;
-        }
-
-        .button-outline:hover {
-          border-color: #45009d;
-          color: #45009d;
-        }
-
-        pre {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          text-align: center;
-        }
-        code {
-          font-size: 0.9rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-            Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
-        }
-      `}</style>
-    </div>
+      <HStack mt="24px" w="100%" justify="flex-end" spacing="12px">
+        <PaginationButtons {...peoplePaginationDetails} />
+      </HStack>
+    </Container>
   )
 }
 
-Home.suppressFirstRenderFlicker = true
-
 export default Home
+
+export const getStaticProps: GetStaticProps = async () => {
+  const people = await getAllPeople()
+
+  return {
+    props: {
+      people,
+    },
+  }
+}
