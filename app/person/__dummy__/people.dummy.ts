@@ -1,4 +1,6 @@
-export const dummyPeople = [
+import { Person } from "../person.types"
+
+export const dummyPeople: Person[] = [
   {
     personId: 1,
     firstName: "Frank",
